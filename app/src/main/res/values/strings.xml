@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Tosh</string>
+    <string name="main_hint">Введите текст или номер телефона</string>
+    <string name="input_label">Текст / телефон</string>
+    <string name="open_second_activity">Открыть вторую Activity</string>
+    <string name="call_friend">Позвонить другу</string>
+    <string name="share_text">Поделиться текстом</string>
+    <string name="share_chooser_title">Поделиться через…</string>
+    <string name="error_empty_text">Введите текст</string>
+    <string name="error_invalid_phone">Введите корректный номер (не менее 3 цифр)</string>
+    <string name="second_activity_empty_text">Текст не передан</string>
 </resources>
