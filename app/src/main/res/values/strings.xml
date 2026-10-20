@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Tosh</string>
+    <string name="apps_title">Список приложений</string>
+    <string name="app_icon_description">Иконка приложения</string>
 </resources>
