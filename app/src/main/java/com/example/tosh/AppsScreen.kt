@@ -41,6 +41,7 @@ import com.example.tosh.ui.theme.ToshTheme
 @Composable
 fun AppsScreen(
     apps: List<AppInfo>,
+    onAppClick: (AppInfo) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -56,9 +57,12 @@ fun AppsScreen(
         ) {
             items(
                 items = apps,
-                key = { it.name },
+                key = { it.id },
             ) { app ->
-                AppListItem(app = app)
+                AppListItem(
+                    app = app,
+                    onClick = { onAppClick(app) },
+                )
             }
         }
     }
@@ -102,11 +106,13 @@ private fun AppsToolbar(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun AppListItem(
+fun AppListItem(
     app: AppInfo,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(
+        onClick = onClick,
         modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainer,
@@ -145,14 +151,13 @@ private fun AppListItem(
 }
 
 @Composable
-private fun AppIcon(
+fun AppIcon(
     app: AppInfo,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier.size(64.dp),
 ) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-            .size(64.dp)
             .clip(RoundedCornerShape(16.dp))
             .background(Color(app.iconColor)),
     ) {
@@ -169,6 +174,9 @@ private fun AppIcon(
 @Composable
 private fun AppsScreenPreview() {
     ToshTheme(dynamicColor = false) {
-        AppsScreen(apps = sampleApps)
+        AppsScreen(
+            apps = sampleApps,
+            onAppClick = {},
+        )
     }
 }
