@@ -20,9 +20,13 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,16 +41,28 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.Image
 import com.example.tosh.ui.theme.ToshTheme
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
 fun AppsScreen(
     apps: List<AppInfo>,
     onAppClick: (AppInfo) -> Unit,
+    onToolbarClick: () -> Unit,
+    snackbarMessages: Flow<String>,
     modifier: Modifier = Modifier,
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+    LaunchedEffect(snackbarMessages) {
+        snackbarMessages.collect { message ->
+            snackbarHostState.showSnackbar(message)
+        }
+    }
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        topBar = { AppsToolbar() },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        topBar = { AppsToolbar(onClick = onToolbarClick) },
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
@@ -69,8 +85,12 @@ fun AppsScreen(
 }
 
 @Composable
-private fun AppsToolbar(modifier: Modifier = Modifier) {
+private fun AppsToolbar(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Surface(
+        onClick = onClick,
         color = MaterialTheme.colorScheme.primary,
         modifier = modifier.fillMaxWidth(),
     ) {
@@ -177,6 +197,8 @@ private fun AppsScreenPreview() {
         AppsScreen(
             apps = sampleApps,
             onAppClick = {},
+            onToolbarClick = {},
+            snackbarMessages = emptyFlow(),
         )
     }
 }

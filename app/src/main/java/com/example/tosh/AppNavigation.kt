@@ -1,7 +1,11 @@
 package com.example.tosh
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -25,11 +29,16 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         modifier = modifier,
     ) {
         composable(Routes.Apps) {
+            val viewModel: AppsViewModel = viewModel()
+            val apps by viewModel.apps.collectAsState()
+            val toolbarMessage = stringResource(R.string.toolbar_snackbar)
             AppsScreen(
-                apps = sampleApps,
+                apps = apps,
                 onAppClick = { app ->
                     navController.navigate(Routes.appDetails(app.id))
                 },
+                onToolbarClick = { viewModel.onToolbarClick(toolbarMessage) },
+                snackbarMessages = viewModel.snackbarMessages,
             )
         }
         composable(
