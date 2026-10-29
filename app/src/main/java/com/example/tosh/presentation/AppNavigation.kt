@@ -1,4 +1,4 @@
-package com.example.tosh
+package com.example.tosh.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -6,6 +6,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.tosh.R
+import com.example.tosh.data.AppsRepositoryImpl
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -22,6 +24,10 @@ private object Routes {
 @Composable
 fun AppNavigation(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
+    val viewModel: AppsViewModel = viewModel {
+        AppsViewModel(AppsRepositoryImpl())
+    }
+    val apps by viewModel.apps.collectAsState()
 
     NavHost(
         navController = navController,
@@ -29,8 +35,6 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         modifier = modifier,
     ) {
         composable(Routes.Apps) {
-            val viewModel: AppsViewModel = viewModel()
-            val apps by viewModel.apps.collectAsState()
             val toolbarMessage = stringResource(R.string.toolbar_snackbar)
             AppsScreen(
                 apps = apps,
@@ -48,11 +52,11 @@ fun AppNavigation(modifier: Modifier = Modifier) {
             ),
         ) { backStackEntry ->
             val appId = backStackEntry.arguments?.getString("appId")
-            val app = sampleApps.firstOrNull { it.id == appId } ?: sampleApps.first()
+            val app = apps.firstOrNull { it.id == appId } ?: apps.firstOrNull() ?: return@composable
 
             AppDetailsScreen(
                 app = app,
-                showcaseApps = sampleApps,
+                showcaseApps = apps,
                 onBackClick = { navController.popBackStack() },
                 onShowcaseAppClick = {
                     navController.popBackStack(Routes.Apps, inclusive = false)

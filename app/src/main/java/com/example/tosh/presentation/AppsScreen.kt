@@ -1,4 +1,8 @@
-package com.example.tosh
+package com.example.tosh.presentation
+
+import com.example.tosh.R
+import com.example.tosh.data.AppsRepositoryImpl
+import com.example.tosh.domain.App
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -46,8 +50,8 @@ import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
 fun AppsScreen(
-    apps: List<AppInfo>,
-    onAppClick: (AppInfo) -> Unit,
+    apps: List<App>,
+    onAppClick: (App) -> Unit,
     onToolbarClick: () -> Unit,
     snackbarMessages: Flow<String>,
     modifier: Modifier = Modifier,
@@ -127,7 +131,7 @@ private fun AppsToolbar(
 
 @Composable
 fun AppListItem(
-    app: AppInfo,
+    app: App,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -172,7 +176,7 @@ fun AppListItem(
 
 @Composable
 fun AppIcon(
-    app: AppInfo,
+    app: App,
     modifier: Modifier = Modifier.size(64.dp),
 ) {
     Box(
@@ -195,7 +199,7 @@ fun AppIcon(
 private fun AppsScreenPreview() {
     ToshTheme(dynamicColor = false) {
         AppsScreen(
-            apps = sampleApps,
+            apps = AppsRepositoryImpl().getApps(),
             onAppClick = {},
             onToolbarClick = {},
             snackbarMessages = emptyFlow(),

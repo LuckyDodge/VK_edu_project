@@ -1,4 +1,8 @@
-package com.example.tosh
+package com.example.tosh.presentation
+
+import com.example.tosh.R
+import com.example.tosh.data.AppsRepositoryImpl
+import com.example.tosh.domain.App
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -36,8 +40,8 @@ import com.example.tosh.ui.theme.ToshTheme
 
 @Composable
 fun AppDetailsScreen(
-    app: AppInfo,
-    showcaseApps: List<AppInfo>,
+    app: App,
+    showcaseApps: List<App>,
     onBackClick: () -> Unit,
     onShowcaseAppClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -115,7 +119,7 @@ private fun DetailsToolbar(
 
 @Composable
 private fun AppDetailsHeader(
-    app: AppInfo,
+    app: App,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -191,7 +195,7 @@ private fun Developer(
 
 @Composable
 private fun Showcase(
-    apps: List<AppInfo>,
+    apps: List<App>,
     onAppClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -254,9 +258,10 @@ private const val AppsPerPage = 3
 @Composable
 private fun AppDetailsScreenPreview() {
     ToshTheme(dynamicColor = false) {
+        val apps = AppsRepositoryImpl().getApps()
         AppDetailsScreen(
-            app = sampleApps.first(),
-            showcaseApps = sampleApps,
+            app = apps.first(),
+            showcaseApps = apps,
             onBackClick = {},
             onShowcaseAppClick = {},
         )

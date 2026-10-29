@@ -1,4 +1,4 @@
-package com.example.tosh
+package com.example.tosh.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
