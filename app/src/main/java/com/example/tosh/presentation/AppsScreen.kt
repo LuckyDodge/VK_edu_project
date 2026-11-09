@@ -1,8 +1,6 @@
 package com.example.tosh.presentation
 
 import com.example.tosh.R
-import com.example.tosh.data.AppMapper
-import com.example.tosh.data.AppsRepositoryImpl
 import com.example.tosh.domain.App
 
 import androidx.compose.foundation.background
@@ -35,15 +33,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import coil3.compose.AsyncImage
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.Image
 import com.example.tosh.ui.theme.ToshTheme
 import kotlinx.coroutines.flow.Flow
@@ -180,19 +177,12 @@ fun AppIcon(
     app: App,
     modifier: Modifier = Modifier.size(64.dp),
 ) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier
-            .clip(RoundedCornerShape(16.dp))
-            .background(Color(app.iconColor)),
-    ) {
-        Text(
-            text = app.iconText,
-            color = Color.White,
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Bold,
-        )
-    }
+    AsyncImage(
+        model = app.iconUrl,
+        contentDescription = app.name,
+        contentScale = ContentScale.Crop,
+        modifier = modifier.clip(RoundedCornerShape(16.dp)),
+    )
 }
 
 @Preview(showBackground = true)
@@ -200,10 +190,34 @@ fun AppIcon(
 private fun AppsScreenPreview() {
     ToshTheme(dynamicColor = false) {
         AppsScreen(
-            apps = AppsRepositoryImpl(AppMapper()).getApps(),
+            apps = previewApps(),
             onAppClick = {},
             onToolbarClick = {},
             snackbarMessages = emptyFlow(),
         )
     }
 }
+
+internal fun previewApps(): List<App> = listOf(
+    App(
+        id = "1",
+        name = "VK Музыка",
+        description = "Музыка и подкасты для любого настроения",
+        category = "Музыка",
+        iconUrl = "",
+    ),
+    App(
+        id = "2",
+        name = "VK Видео",
+        description = "Фильмы, сериалы, шоу и прямые трансляции",
+        category = "Видео",
+        iconUrl = "",
+    ),
+    App(
+        id = "3",
+        name = "VK Мессенджер",
+        description = "Общение с друзьями в личных и групповых чатах",
+        category = "Социальные сети",
+        iconUrl = "",
+    ),
+)

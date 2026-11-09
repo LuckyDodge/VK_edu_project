@@ -2,6 +2,7 @@ package com.example.tosh.presentation
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.tosh.domain.App
 import com.example.tosh.domain.AppsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class AppsViewModel @Inject constructor(
@@ -32,8 +34,12 @@ class AppsViewModel @Inject constructor(
     }
 
     private fun loadApps() {
-        Log.d(TAG, "loadApps")
-        _apps.value = repository.getApps()
+        viewModelScope.launch {
+            Log.d(TAG, "loadApps")
+            runCatching { repository.getApps() }
+                .onSuccess { apps -> _apps.value = apps }
+                .onFailure { error -> Log.e(TAG, "loadApps", error) }
+        }
     }
 
     private companion object {

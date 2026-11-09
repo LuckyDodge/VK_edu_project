@@ -1,8 +1,6 @@
 package com.example.tosh.presentation
 
 import com.example.tosh.R
-import com.example.tosh.data.AppMapper
-import com.example.tosh.data.AppsRepositoryImpl
 import com.example.tosh.domain.App
 
 import androidx.compose.foundation.background
@@ -67,14 +65,6 @@ fun AppDetailsScreen(
         }
         AppDescription(
             description = app.description,
-            modifier = Modifier.padding(16.dp),
-        )
-        HorizontalDivider(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            color = MaterialTheme.colorScheme.outlineVariant,
-        )
-        Developer(
-            name = app.developer,
             modifier = Modifier.padding(16.dp),
         )
         HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
@@ -143,15 +133,6 @@ private fun AppDetailsHeader(
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.headlineSmall,
             )
-            Text(
-                text = app.developer,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.bodySmall,
-            )
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                Text("${app.ageRating}+")
-                Text("${app.sizeMb} MB")
-            }
         }
     }
 }
@@ -172,24 +153,6 @@ private fun AppDescription(
             text = description,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.bodyMedium,
-        )
-    }
-}
-
-@Composable
-private fun Developer(
-    name: String,
-    modifier: Modifier = Modifier,
-) {
-    Column(modifier = modifier) {
-        Text(
-            text = name,
-            fontWeight = FontWeight.Medium,
-        )
-        Text(
-            text = stringResource(R.string.app_details_developer),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.bodySmall,
         )
     }
 }
@@ -259,7 +222,7 @@ private const val AppsPerPage = 3
 @Composable
 private fun AppDetailsScreenPreview() {
     ToshTheme(dynamicColor = false) {
-        val apps = AppsRepositoryImpl(AppMapper()).getApps()
+        val apps = previewApps()
         AppDetailsScreen(
             app = apps.first(),
             showcaseApps = apps,

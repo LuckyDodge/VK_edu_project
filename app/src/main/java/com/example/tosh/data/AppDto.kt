@@ -1,13 +1,12 @@
 package com.example.tosh.data
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class AppDto(
     val id: String,
-    val title: String,
-    val shortDescription: String,
+    val name: String,
+    val description: String,
     val category: String,
-    val developer: String,
-    val ageRating: Int = 12,
-    val size: Double = 100.0,
-    val iconLabel: String,
-    val iconColor: Long,
+    val iconUrl: String,
 )

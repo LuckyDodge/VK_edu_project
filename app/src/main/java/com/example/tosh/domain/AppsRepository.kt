@@ -1,5 +1,7 @@
 package com.example.tosh.domain
 
 interface AppsRepository {
-    fun getApps(): List<App>
+    suspend fun getApps(): List<App>
+
+    suspend fun getAppDetails(id: String): AppDetails
 }
