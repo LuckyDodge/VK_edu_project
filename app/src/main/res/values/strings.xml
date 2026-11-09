@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Tosh</string>
+    <string name="apps_title">Список приложений</string>
+    <string name="toolbar_snackbar">Тулбар нажат</string>
+    <string name="app_icon_description">Иконка приложения</string>
+    <string name="app_details_title">Карточка приложения</string>
+    <string name="install">Установить</string>
+    <string name="app_details_description">Описание приложения</string>
+    <string name="app_details_developer">Разработчик</string>
+    <string name="showcase_title">Витрина</string>
 </resources>
