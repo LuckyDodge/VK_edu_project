@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.tosh.domain.App
 import com.example.tosh.domain.AppsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -11,7 +13,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class AppsViewModel(
+@HiltViewModel
+class AppsViewModel @Inject constructor(
     private val repository: AppsRepository,
 ) : ViewModel() {
     private val _apps = MutableStateFlow<List<App>>(emptyList())

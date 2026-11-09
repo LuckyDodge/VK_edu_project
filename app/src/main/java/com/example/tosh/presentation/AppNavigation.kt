@@ -5,9 +5,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.tosh.R
-import com.example.tosh.data.AppsRepositoryImpl
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -24,9 +23,7 @@ private object Routes {
 @Composable
 fun AppNavigation(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
-    val viewModel: AppsViewModel = viewModel {
-        AppsViewModel(AppsRepositoryImpl())
-    }
+    val viewModel: AppsViewModel = hiltViewModel()
     val apps by viewModel.apps.collectAsState()
 
     NavHost(

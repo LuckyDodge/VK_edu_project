@@ -1,8 +1,9 @@
 package com.example.tosh.data
 
 import com.example.tosh.domain.App
+import javax.inject.Inject
 
-class AppMapper {
+class AppMapper @Inject constructor() {
     fun toDomain(dto: AppDto): App = App(
         id = dto.id,
         name = dto.title,

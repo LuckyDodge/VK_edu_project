@@ -1,6 +1,7 @@
 package com.example.tosh.presentation
 
 import com.example.tosh.R
+import com.example.tosh.data.AppMapper
 import com.example.tosh.data.AppsRepositoryImpl
 import com.example.tosh.domain.App
 
@@ -258,7 +259,7 @@ private const val AppsPerPage = 3
 @Composable
 private fun AppDetailsScreenPreview() {
     ToshTheme(dynamicColor = false) {
-        val apps = AppsRepositoryImpl().getApps()
+        val apps = AppsRepositoryImpl(AppMapper()).getApps()
         AppDetailsScreen(
             app = apps.first(),
             showcaseApps = apps,

@@ -1,6 +1,7 @@
 package com.example.tosh.presentation
 
 import com.example.tosh.R
+import com.example.tosh.data.AppMapper
 import com.example.tosh.data.AppsRepositoryImpl
 import com.example.tosh.domain.App
 
@@ -199,7 +200,7 @@ fun AppIcon(
 private fun AppsScreenPreview() {
     ToshTheme(dynamicColor = false) {
         AppsScreen(
-            apps = AppsRepositoryImpl().getApps(),
+            apps = AppsRepositoryImpl(AppMapper()).getApps(),
             onAppClick = {},
             onToolbarClick = {},
             snackbarMessages = emptyFlow(),
