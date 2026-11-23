@@ -5,6 +5,11 @@
     <string name="app_icon_description">Иконка приложения</string>
     <string name="app_details_title">Карточка приложения</string>
     <string name="install">Установить</string>
+    <string name="install_cancel">Отменить</string>
+    <string name="installed">Установлено</string>
+    <string name="ratings_sequential">По очереди</string>
+    <string name="ratings_parallel">Параллельно</string>
+    <string name="rating_value">★ %1$.1f</string>
     <string name="app_details_description">Описание приложения</string>
     <string name="showcase_title">Витрина</string>
 </resources>

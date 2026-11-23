@@ -39,6 +39,8 @@ fun AppNavigation(modifier: Modifier = Modifier) {
                     navController.navigate(Routes.appDetails(app.id))
                 },
                 onToolbarClick = { viewModel.onToolbarClick(toolbarMessage) },
+                onLoadRatingsSequentially = viewModel::onLoadRatingsSequentially,
+                onLoadRatingsInParallel = viewModel::onLoadRatingsInParallel,
                 snackbarMessages = viewModel.snackbarMessages,
             )
         }
@@ -50,10 +52,16 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         ) { backStackEntry ->
             val appId = backStackEntry.arguments?.getString("appId")
             val app = apps.firstOrNull { it.id == appId } ?: apps.firstOrNull() ?: return@composable
+            val detailsViewModel: AppDetailsViewModel = hiltViewModel()
+            val detailsState by detailsViewModel.state.collectAsState()
+            val installState = (detailsState as? AppDetailsState.Content)?.installState
+                ?: InstallState.NotInstalled
 
             AppDetailsScreen(
                 app = app,
                 showcaseApps = apps,
+                installState = installState,
+                onInstallClick = detailsViewModel::onInstallClick,
                 onBackClick = { navController.popBackStack() },
                 onShowcaseAppClick = {
                     navController.popBackStack(Routes.Apps, inclusive = false)

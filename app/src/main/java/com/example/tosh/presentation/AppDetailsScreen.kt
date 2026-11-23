@@ -41,6 +41,8 @@ import com.example.tosh.ui.theme.ToshTheme
 fun AppDetailsScreen(
     app: App,
     showcaseApps: List<App>,
+    installState: InstallState,
+    onInstallClick: () -> Unit,
     onBackClick: () -> Unit,
     onShowcaseAppClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -56,12 +58,12 @@ fun AppDetailsScreen(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
         )
         Button(
-            onClick = {},
+            onClick = onInstallClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
         ) {
-            Text(stringResource(R.string.install))
+            Text(installButtonText(installState))
         }
         AppDescription(
             description = app.description,
@@ -215,6 +217,17 @@ private fun Showcase(
     }
 }
 
+@Composable
+private fun installButtonText(installState: InstallState): String {
+    return when (installState) {
+        is InstallState.Installing -> {
+            stringResource(R.string.install_cancel) + " ${installState.progress}%"
+        }
+        InstallState.Installed -> stringResource(R.string.installed)
+        InstallState.NotInstalled -> stringResource(R.string.install)
+    }
+}
+
 private const val ShowcasePageCount = 3
 private const val AppsPerPage = 3
 
@@ -226,6 +239,8 @@ private fun AppDetailsScreenPreview() {
         AppDetailsScreen(
             app = apps.first(),
             showcaseApps = apps,
+            installState = InstallState.NotInstalled,
+            onInstallClick = {},
             onBackClick = {},
             onShowcaseAppClick = {},
         )

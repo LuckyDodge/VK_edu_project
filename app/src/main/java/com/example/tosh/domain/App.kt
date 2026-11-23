@@ -6,4 +6,5 @@ data class App(
     val description: String,
     val category: String,
     val iconUrl: String,
+    val rating: Float? = null,
 )

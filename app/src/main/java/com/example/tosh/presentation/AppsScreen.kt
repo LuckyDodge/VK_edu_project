@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -51,6 +52,8 @@ fun AppsScreen(
     apps: List<App>,
     onAppClick: (App) -> Unit,
     onToolbarClick: () -> Unit,
+    onLoadRatingsSequentially: () -> Unit,
+    onLoadRatingsInParallel: () -> Unit,
     snackbarMessages: Flow<String>,
     modifier: Modifier = Modifier,
 ) {
@@ -66,21 +69,44 @@ fun AppsScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = { AppsToolbar(onClick = onToolbarClick) },
     ) { innerPadding ->
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            items(
-                items = apps,
-                key = { it.id },
-            ) { app ->
-                AppListItem(
-                    app = app,
-                    onClick = { onAppClick(app) },
-                )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, top = 12.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Button(
+                    onClick = onLoadRatingsSequentially,
+                    modifier = Modifier.weight(1f),
+                ) {
+                    Text(stringResource(R.string.ratings_sequential))
+                }
+                Button(
+                    onClick = onLoadRatingsInParallel,
+                    modifier = Modifier.weight(1f),
+                ) {
+                    Text(stringResource(R.string.ratings_parallel))
+                }
+            }
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                items(
+                    items = apps,
+                    key = { it.id },
+                ) { app ->
+                    AppListItem(
+                        app = app,
+                        onClick = { onAppClick(app) },
+                    )
+                }
             }
         }
     }
@@ -150,11 +176,21 @@ fun AppListItem(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                Text(
-                    text = app.name,
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleMedium,
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = app.name,
+                        modifier = Modifier.weight(1f),
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                    app.rating?.let { rating ->
+                        Text(
+                            text = stringResource(R.string.rating_value, rating),
+                            color = MaterialTheme.colorScheme.primary,
+                            style = MaterialTheme.typography.labelLarge,
+                        )
+                    }
+                }
                 Text(
                     text = app.description,
                     maxLines = 2,
@@ -193,6 +229,8 @@ private fun AppsScreenPreview() {
             apps = previewApps(),
             onAppClick = {},
             onToolbarClick = {},
+            onLoadRatingsSequentially = {},
+            onLoadRatingsInParallel = {},
             snackbarMessages = emptyFlow(),
         )
     }
